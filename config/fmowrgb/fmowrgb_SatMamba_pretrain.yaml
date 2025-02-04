@@ -1,0 +1,55 @@
+Data:
+  data_set: 'fmowrgb'
+  data_root: /data/fmow224/input/train_data/
+  data_config_root: ./dataset_config/fmowrgb/
+  train_list: train_62classes_revised.csv
+  val_list: val_62classes_revised.csv
+
+Method:
+  arch: 'SatMamba'
+  depth: 12
+  embed_dim: 768
+  img_size: 224
+  in_chans: 3
+  patch_size: 16
+  decoder_embed_dim: 512
+  decoder_depth: 8
+  mask_ratio: 0.75
+  if_pos_encod: False
+  norm_epsilon: 1.0e-5
+  rms_norm: True
+  fused_add_norm: True
+  residual_in_fp32: True
+  norm_pix_loss: True
+  d_state: 64
+  headdim: 96
+  scan: 4
+
+Train:
+  exp_name: 'mambabasenormvmambah96d64'
+  # Optimizer
+  batch_size: 336 # 336 # batch size for training (bs12 for 1GPU)
+  base_lr: 0.00015 # 3.2e-5 # 0.0004 for vit small/base / SatMAE/Masked Autoencoder: 0.00015
+  min_lr: 0.0
+  epochs: 800
+  start_epoch: 0
+  warmup_epochs: 40
+  stop_interval: 50 # stop when the best result is not updated for "stop_interval" epochs
+  weight_decay: 0.05
+  beta1: 0.9
+  beta2: 0.95
+  clip_grad:
+  # Viz & Save & Resume
+  print_freq: 1
+  save_freq: 5
+  resume: # path to latest checkpoint (default: none, such as epoch_10.pth)
+  # Validate
+  evaluate: True
+  save_checkpoint_val: False
+  fix_random_seed_val: True
+  batch_size_val: 336
+  # Else
+  num_workers: 2 # 8 data loader workers
+  manual_seed: 0
+  seed_deterministic: False
+  mix_precision: True
